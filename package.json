@@ -1,7 +1,6 @@
 {
-  "name": "express-template",
+  "name": "odin-inventory-application",
   "version": "1.0.0",
-  "description": "Includes Express, EJS, express-validator, &amp; pg. May update in the future with more.",
   "main": "app.js",
   "scripts": {
     "start": "node --env-file-if-exists=.env app.js",
@@ -11,16 +10,16 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/deepend15/node-express-template.git"
+    "url": "git+https://github.com/deepend15/odin-inventory-application.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "module",
   "bugs": {
-    "url": "https://github.com/deepend15/node-express-template/issues"
+    "url": "https://github.com/deepend15/odin-inventory-application/issues"
   },
-  "homepage": "https://github.com/deepend15/node-express-template#readme",
+  "homepage": "https://github.com/deepend15/odin-inventory-application#readme",
   "dependencies": {
     "ejs": "^4.0.1",
     "express": "^5.2.1",
