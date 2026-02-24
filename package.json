@@ -1,0 +1,30 @@
+{
+  "name": "express-template",
+  "version": "1.0.0",
+  "description": "Includes Express, EJS, express-validator, &amp; pg. May update in the future with more.",
+  "main": "app.js",
+  "scripts": {
+    "start": "node --env-file-if-exists=.env app.js",
+    "dev": "node --run start -- --watch",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "push": "git push origin main"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/deepend15/node-express-template.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/deepend15/node-express-template/issues"
+  },
+  "homepage": "https://github.com/deepend15/node-express-template#readme",
+  "dependencies": {
+    "ejs": "^4.0.1",
+    "express": "^5.2.1",
+    "express-validator": "^7.3.1",
+    "pg": "^8.18.0"
+  }
+}
