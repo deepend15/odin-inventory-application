@@ -1,7 +1,7 @@
 import express from "express";
 import path from "node:path";
 // import router(s)
-import { CustomNotFoundError } from "./errors/CustomNotFoundError";
+import { CustomNotFoundError } from "./errors/CustomNotFoundError.js";
 
 const app = express();
 
