@@ -1,4 +1,3 @@
-// update filename to name of controller in question (i.e. "usersController.js")
 import * as db from "../db/queries.js";
 import { body, validationResult, matchedData } from "express-validator";
 
@@ -8,6 +7,13 @@ import { body, validationResult, matchedData } from "express-validator";
 //   body functions
 // ]
 
-// define async functions for querying db & rendering views
+async function allStudiosGet(req, res) {
+  // WIP
+  const studios = [];
+  res.render("studios", {
+    title: "Studios",
+    studios: studios,
+  });
+}
 
-// export { functions }
+export { allStudiosGet };

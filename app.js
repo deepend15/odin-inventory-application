@@ -1,6 +1,8 @@
 import express from "express";
 import path from "node:path";
-// import router(s)
+import genresRouter from "./routes/genresRouter.js";
+import studiosRouter from "./routes/studiosRouter.js";
+import indexRouter from "./routes/indexRouter.js";
 import { CustomNotFoundError } from "./errors/CustomNotFoundError.js";
 
 const app = express();
@@ -15,7 +17,9 @@ app.use(express.static(assetsPath));
 
 app.use(express.urlencoded({ extended: true }));
 
-// app.use() / router(s) info
+app.use("/genres", genresRouter);
+app.use("/studios", studiosRouter);
+app.use("/", indexRouter);
 
 // 404 error
 app.use((req, res, next) => {
