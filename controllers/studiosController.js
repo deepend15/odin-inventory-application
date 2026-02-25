@@ -1,5 +1,6 @@
 import * as db from "../db/queries.js";
 import { body, validationResult, matchedData } from "express-validator";
+import convertToPath from "./convertToPath.js";
 
 // define validation error messages
 
@@ -9,7 +10,17 @@ import { body, validationResult, matchedData } from "express-validator";
 
 async function allStudiosGet(req, res) {
   // WIP
-  const studios = [];
+  const studios = [
+    {
+      studio: "Disney",
+    },
+    {
+      studio: "Warner Bros",
+    },
+  ];
+  studios.forEach((studio) => {
+    studio.path = convertToPath(studio.studio);
+  });
   res.render("studios", {
     title: "Studios",
     studios: studios,

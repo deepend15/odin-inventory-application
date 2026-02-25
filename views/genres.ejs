@@ -7,10 +7,11 @@
     <title><%= title %></title>
   </head>
   <body>
+    <%- include('nav') %>
     <h1><%= title %></h1>
     <ul>
       <% genres.forEach((genre) => { %>
-        <li><a href=""><%= genre %></a></li>
+        <li><a href="genres/<%= genre.path %>"><%= genre.genre %></a></li>
       <% }); %>
     </ul>
   </body>
