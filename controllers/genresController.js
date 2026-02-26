@@ -9,15 +9,7 @@ import convertToPath from "./convertToPath.js";
 // ]
 
 async function allGenresGet(req, res) {
-  // WIP
-  const genres = [
-    {
-      genre: "Action/Adventure",
-    },
-    {
-      genre: "Comedy",
-    },
-  ];
+  const genres = await db.getAllGenres();
   genres.forEach((genre) => {
     genre.path = convertToPath(genre.genre);
   });
@@ -27,4 +19,11 @@ async function allGenresGet(req, res) {
   });
 }
 
-export { allGenresGet };
+async function singleGenreGet(req, res) {
+  // WIP
+  const { genre } = req.params;
+  console.log(genre);
+  res.send("hi");
+}
+
+export { allGenresGet, singleGenreGet };

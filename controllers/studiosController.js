@@ -9,15 +9,7 @@ import convertToPath from "./convertToPath.js";
 // ]
 
 async function allStudiosGet(req, res) {
-  // WIP
-  const studios = [
-    {
-      studio: "Disney",
-    },
-    {
-      studio: "Warner Bros",
-    },
-  ];
+  const studios = await db.getAllStudios();
   studios.forEach((studio) => {
     studio.path = convertToPath(studio.studio);
   });
@@ -27,4 +19,11 @@ async function allStudiosGet(req, res) {
   });
 }
 
-export { allStudiosGet };
+async function singleStudioGet(req, res) {
+  // WIP
+  const { studio } = req.params;
+  console.log(studio);
+  res.send("hi");
+}
+
+export { allStudiosGet, singleStudioGet };

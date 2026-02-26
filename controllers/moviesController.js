@@ -9,15 +9,7 @@ import convertToPath from "./convertToPath.js";
 // ]
 
 async function allMoviesGet(req, res) {
-  // WIP
-  const movies = [
-    {
-      title: "Harry Potter and the Sorceror's Stone",
-    },
-    {
-      title: "Spider-Man (2003)",
-    },
-  ];
+  const movies = await db.getAllMovies();
   movies.forEach((movie) => {
     movie.path = convertToPath(movie.title);
   });
