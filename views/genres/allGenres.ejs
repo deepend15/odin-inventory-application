@@ -3,15 +3,15 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <%- include('favicon') %>
+    <%- include('../favicon') %>
     <title><%= title %></title>
   </head>
   <body>
-    <%- include('nav') %>
+    <%- include('../nav') %>
     <h1><%= title %></h1>
     <ul>
       <% genres.forEach((genre) => { %>
-        <li><a href="genres/<%= genre.path %>"><%= genre.genre %></a></li>
+        <li><a href="genres/<%= genre.url_path %>"><%= genre.genre %></a></li>
       <% }); %>
     </ul>
   </body>

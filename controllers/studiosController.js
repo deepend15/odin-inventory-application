@@ -1,6 +1,6 @@
 import * as db from "../db/queries.js";
 import { body, validationResult, matchedData } from "express-validator";
-import convertToPath from "./convertToPath.js";
+import { encodeString } from "./urlEncoding.js";
 
 // define validation error messages
 
@@ -10,20 +10,21 @@ import convertToPath from "./convertToPath.js";
 
 async function allStudiosGet(req, res) {
   const studios = await db.getAllStudios();
-  studios.forEach((studio) => {
-    studio.path = convertToPath(studio.studio);
-  });
-  res.render("studios", {
+  res.render("studios/allStudios", {
     title: "Studios",
     studios: studios,
   });
 }
 
 async function singleStudioGet(req, res) {
-  // WIP
-  const { studio } = req.params;
-  console.log(studio);
-  res.send("hi");
+  const { studioPath } = req.params;
+  const encodedPath = encodeString(studioPath);
+  const { studio } = await db.getStudioName(encodedPath);
+  const movies = await db.getStudioMovies(studio);
+  res.render("studios/singleStudio", {
+    title: studio,
+    movies: movies,
+  });
 }
 
 export { allStudiosGet, singleStudioGet };

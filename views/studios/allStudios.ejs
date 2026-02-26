@@ -3,16 +3,16 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <%- include('favicon') %>
+    <%- include('../favicon') %>
     <title><%= title %></title>
   </head>
   <body>
-    <%- include('nav') %>
+    <%- include('../nav') %>
     <h1><%= title %></h1>
     <ul>
       <% studios.forEach((studio) => { %>
         <li>
-          <a href="studios/<%= studio.path %>"><%= studio.studio %></a>
+          <a href="studios/<%= studio.url_path %>"><%= studio.studio %></a>
         </li>
       <% }); %>
     </ul>

@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <%- include('../favicon') %>
+    <title><%= movie.title %></title>
+  </head>
+  <body>
+    <%- include('../nav') %>
+    <h1><%= movie.title %></h1>
+    <ul>
+        <li>Year released: <%= movie.year %></li>
+    </ul>
+  </body>
+</html>

@@ -1,6 +1,6 @@
 import * as db from "../db/queries.js";
 import { body, validationResult, matchedData } from "express-validator";
-import convertToPath from "./convertToPath.js";
+import { encodeString } from "./urlEncoding.js";
 
 // define validation error messages
 
@@ -10,13 +10,19 @@ import convertToPath from "./convertToPath.js";
 
 async function allMoviesGet(req, res) {
   const movies = await db.getAllMovies();
-  movies.forEach((movie) => {
-    movie.path = convertToPath(movie.title);
-  });
-  res.render("movies", {
+  res.render("movies/allMovies", {
     title: "All movies",
     movies: movies,
   });
 }
 
-export { allMoviesGet };
+async function singleMovieGet(req, res) {
+  const { moviePath } = req.params;
+  const encodedPath = encodeString(moviePath);
+  const movie = await db.getSingleMovie(encodedPath);
+  res.render("movies/singleMovie", {
+    movie: movie,
+  });
+}
+
+export { allMoviesGet, singleMovieGet };

@@ -3,14 +3,18 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="/styles.css" />
-    <%- include('favicon') %>
+    <%- include('../favicon') %>
     <title><%= title %></title>
   </head>
   <body>
-    <%- include('nav') %>
+    <%- include('../nav') %>
     <h1><%= title %></h1>
-    <p>Use the above links to navigate through the inventory.</p>
-    <p>Note that "studio" refers to the distributing studio only.</p>
+    <ul>
+      <% movies.forEach((movie) => { %>
+        <li>
+          <a href="movies/<%= movie.url_path %>"><%= movie.title %></a>
+        </li>
+      <% }); %>
+    </ul>
   </body>
 </html>

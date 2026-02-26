@@ -9,5 +9,6 @@ indexRouter.get("/", (req, res) => {
   });
 });
 indexRouter.get("/movies", moviesController.allMoviesGet);
+indexRouter.get("/movies/:moviePath", moviesController.singleMovieGet);
 
 export default indexRouter;

@@ -1,6 +1,6 @@
 import * as db from "../db/queries.js";
 import { body, validationResult, matchedData } from "express-validator";
-import convertToPath from "./convertToPath.js";
+import { encodeString } from "./urlEncoding.js";
 
 // define validation error messages
 
@@ -10,20 +10,21 @@ import convertToPath from "./convertToPath.js";
 
 async function allGenresGet(req, res) {
   const genres = await db.getAllGenres();
-  genres.forEach((genre) => {
-    genre.path = convertToPath(genre.genre);
-  });
-  res.render("genres", {
+  res.render("genres/allGenres", {
     title: "Genres",
     genres: genres,
   });
 }
 
 async function singleGenreGet(req, res) {
-  // WIP
-  const { genre } = req.params;
-  console.log(genre);
-  res.send("hi");
+  const { genrePath } = req.params;
+  const encodedPath = encodeString(genrePath);
+  const { genre } = await db.getGenreName(encodedPath);
+  const movies = await db.getGenreMovies(genre);
+  res.render("genres/singleGenre", {
+    title: genre,
+    movies: movies,
+  });
 }
 
 export { allGenresGet, singleGenreGet };

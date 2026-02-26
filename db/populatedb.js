@@ -3,61 +3,64 @@ import { Client } from "pg";
 const SQL = `
 CREATE TABLE IF NOT EXISTS movies (
   id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-  movie VARCHAR ( 255 ),
+  title VARCHAR ( 255 ),
   studio_id INTEGER,
   genre_1_id INTEGER,
   genre_2_id INTEGER,
   year INTEGER,
-  stock INTEGER DEFAULT 5
+  stock INTEGER DEFAULT 5,
+  url_path VARCHAR ( 255 )
 );
 
 CREATE TABLE IF NOT EXISTS studios (
   id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-  studio VARCHAR (255)
+  studio VARCHAR (255),
+  url_path VARCHAR ( 255 )
 );
 
 CREATE TABLE IF NOT EXISTS genres (
   id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-  genre VARCHAR (255)
+  genre VARCHAR (255),
+  url_path VARCHAR ( 255 )
 );
 
-INSERT INTO studios (studio)
+INSERT INTO studios (studio, url_path)
   VALUES
-    ('Paramount Pictures'),
-    ('Disney'),
-    ('Sony'),
-    ('Warner Bros.'),
-    ('A24'),
-    ('New Line Cinema'),
-    ('Universal');
+    ('Paramount Pictures', 'paramount-pictures'),
+    ('Disney', 'disney'),
+    ('Sony', 'sony'),
+    ('Warner Bros.', 'warner-bros'),
+    ('A24', 'a24'),
+    ('New Line Cinema', 'new-line-cinema'),
+    ('Universal', 'universal');
 
-INSERT INTO genres (genre)
+INSERT INTO genres (genre, url_path)
   VALUES
-    ('Action/Adventure'),
-    ('Sci-Fi'),
-    ('Animated'),
-    ('Drama'),
-    ('Romance'),
-    ('Fantasy'),
-    ('Comedy'),
-    ('Documentary'),
-    ('Horror'),
-    ('Thriller'),
-    ('Musical'),
-    ('Crime'),
-    ('Mystery'),
-    ('Sports'),
-    ('War'),
-    ('Western');
+    ('Action/Adventure', 'action%2Fadventure'),
+    ('Sci-Fi', 'sci-fi'),
+    ('Animated', 'animated'),
+    ('Drama', 'drama'),
+    ('Romance', 'romance'),
+    ('Fantasy', 'fantasy'),
+    ('Comedy', 'comedy'),
+    ('Documentary', 'documentary'),
+    ('Horror', 'horror'),
+    ('Thriller', 'thriller'),
+    ('Musical', 'musical'),
+    ('Crime', 'crime'),
+    ('Mystery', 'mystery'),
+    ('Sports', 'sports'),
+    ('War', 'war'),
+    ('Western', 'western');
 
-INSERT INTO movies (title, studio_id, genre_1_id, genre_2_id, year)
+INSERT INTO movies (title, studio_id, genre_1_id, genre_2_id, year, url_path)
   VALUES
-    ('The Godfather', 1, 4, 12, 1972),
-    ('Coco', 2, 3, 11, 2017),
-    ('Spider-Man (2002)', 3, 1, NULL, 2002), 
-    ('Harry Potter and the Sorceror''s Stone', 4, 6, NULL, 2001),
-    ('Everything Everywhere All At Once', 5, 1, 2, 2022),
-    ('The Notebook', 6, 5, NULL, 2004);
+    ('The Godfather', 1, 4, 12, 1972, 'the-godfather'),
+    ('Coco', 2, 3, 11, 2017, 'coco'),
+    ('Spider-Man (2002)', 3, 1, NULL, 2002, 'spider-man-2002'), 
+    ('Harry Potter and the Sorceror''s Stone', 4, 6, NULL, 2001, 'harry-potter-and-the-sorcerors-stone'),
+    ('Everything Everywhere All At Once', 5, 1, 2, 2022, 'everything-everywhere-all-at-once'),
+    ('The Notebook', 6, 5, NULL, 2004, 'the-notebook');
 `;
 
 async function main() {
