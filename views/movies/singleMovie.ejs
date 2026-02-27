@@ -15,7 +15,7 @@
           Genre:
           <a href="/genres/<%= movie.genre_1_path %>"><%= movie.genre_1 _%></a><%= movie.genre_2 ? ',' : '' %>
           <% if (movie.genre_2) { %>
-            <span><a href="/genres/<%= movie.genre_2_path %>"><%= movie.genre_2 %></a></span>
+            <a href="/genres/<%= movie.genre_2_path %>"><%= movie.genre_2 %></a>
           <% } %>
         </li>
         <li>Studio:
