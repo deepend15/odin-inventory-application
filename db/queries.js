@@ -26,9 +26,43 @@ async function getSingleMovie(moviePath) {
   return rows[0];
 }
 
+async function addMovie(
+  title,
+  studioId,
+  genre1Id,
+  genre2Id,
+  year,
+  stock,
+  moviePath,
+) {
+  await pool.query(
+    `INSERT INTO movies (title, studio_id, genre_1_id, year, stock, url_path)
+      VALUES (
+        '${title}',
+        '${studioId}',
+        '${genre1Id}',
+        '${year}',
+        '${stock}',
+        '${moviePath}'
+      )`,
+  );
+  if (genre2Id) {
+    await pool.query(
+      `INSERT INTO MOVIES (genre_2_id) VALUES ('${genre2Id}') WHERE url_path = '${moviePath}'`,
+    );
+  }
+}
+
 async function getAllGenres() {
   const { rows } = await pool.query("SELECT * FROM genres ORDER BY genre");
   return rows;
+}
+
+async function getGenreId(genreName) {
+  const { rows } = await pool.query(
+    `SELECT id FROM genres WHERE genre = '${genreName}'`,
+  );
+  return rows[0].id;
 }
 
 async function getGenreName(genrePath) {
@@ -55,6 +89,13 @@ async function getAllStudios() {
   return rows;
 }
 
+async function getStudioId(studioName) {
+  const { rows } = await pool.query(
+    `SELECT id FROM studios WHERE studio = '${studioName}'`,
+  );
+  return rows[0].id;
+}
+
 async function getStudioName(studioPath) {
   const { rows } = await pool.query(
     `SELECT studio FROM studios WHERE url_path = '${studioPath}'`,
@@ -76,10 +117,13 @@ async function getStudioMovies(studioName) {
 export {
   getAllMovies,
   getSingleMovie,
+  addMovie,
   getAllGenres,
+  getGenreId,
   getGenreName,
   getGenreMovies,
   getAllStudios,
+  getStudioId,
   getStudioName,
   getStudioMovies,
 };

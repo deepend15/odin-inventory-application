@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <%- include('../partials/favicon') %>
+    <title><%= title %></title>
+  </head>
+  <body>
+    <%- include('../partials/nav') %>
+    <h1><%= title %></h1>
+    <p>* = required field</p>
+    <%- include('../partials/errors') %>
+    <form action="/movies/add-movie" method="POST">
+      <p>
+        <label for="title">*Title:</label>
+        <input type="text" name="title" id="title" required />
+      </p>
+      <p>
+        <label for="studio">*Studio:</label>
+        <select name="studio" id="studio" required>
+            <option value="">--Select a studio--</option>
+          <% studios.forEach((studio) => { %>
+            <option><%= studio.studio %></option>
+          <% }); %>
+        </select>
+      </p>
+      <p>
+        <label for="genre1">*Primary genre:</label>
+        <select name="genre1" id="genre1" required>
+            <option value="">--Select a genre--</option>
+          <% genres.forEach((genre) => { %>
+            <option><%= genre.genre %></option>
+          <% }); %>
+        </select>
+      </p>
+      <p>
+        <label for="genre2">Secondary genre:</label>
+        <select name="genre2" id="genre2">
+            <option value="">--Select a genre--</option>
+          <% genres.forEach((genre) => { %>
+            <option><%= genre.genre %></option>
+          <% }); %>
+        </select>
+      </p>
+      <p>
+        <label for="year">*Year of release:</label>
+        <input
+          type="number"
+          name="year"
+          id="year"
+          min="1878"
+          max="2500"
+          required
+        >
+      </p>
+      <p>
+        <label for="stock">*Number in stock:</label>
+        <input
+          type="number"
+          name="stock"
+          id="stock"
+          min="0"
+          max="2000"
+          required
+        >
+      </p>
+      <button>Submit</button>
+    </form>
+    <br>
+    <a href="/movies">&lt;&lt; Back to all movies</a>
+  </body>
+</html>
