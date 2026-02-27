@@ -1,5 +1,5 @@
 export function encodeString(string) {
-  const encodedString = encodeURIComponent(string.trim().toLowerCase())
+  const encodedString = encodeURIComponent(string.toLowerCase())
     .replace(/'/g, "")
     .replace(/!/g, "%21")
     .replace(/\*/g, "%2A")
