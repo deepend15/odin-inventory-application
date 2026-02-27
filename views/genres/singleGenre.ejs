@@ -8,13 +8,18 @@
   </head>
   <body>
     <%- include('../nav') %>
-    <h1>Genre > <%= title %></h1>
-    <ul>
-      <% movies.forEach((movie) => { %>
-        <li>
-          <a href="/movies/<%= movie.url_path %>"><%= movie.title %></a>
-        </li>
-      <% }); %>
-    </ul>
+    <h1>Genres > <%= title %></h1>
+    <% if (movies.length > 0) { %>
+      <ul>
+        <% movies.forEach((movie) => { %>
+          <li>
+            <a href="/movies/<%= movie.url_path %>"><%= movie.title %></a>
+          </li>
+        <% }); %>
+      </ul>
+    <% } else { %>
+      <p>No movies in stock for this genre.</p>
+    <% } %>
+    <a href="/genres">&lt;&lt; All genres</a>
   </body>
 </html>
