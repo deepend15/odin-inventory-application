@@ -9,6 +9,7 @@
   <body>
     <%- include('../partials/nav') %>
     <h1><%= movie.title %></h1>
+    <a href="/movies/<%= movie.movie_path %>/edit"><button>Edit movie</button></a>
     <ul>
         <li>Year released: <%= movie.year %></li>
         <li>

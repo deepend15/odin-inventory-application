@@ -96,8 +96,34 @@ const addMoviePost = [
       Number(stock),
       moviePath,
     );
-    res.redirect(`/movies/${moviePath}`);
+    res.redirect(`movies/${moviePath}`);
   },
 ];
 
-export { allMoviesGet, singleMovieGet, addMovieGet, addMoviePost };
+async function editMovieGet(req, res) {
+  const { moviePath } = req.params;
+  const encodedPath = encodeString(moviePath);
+  const movie = await db.getSingleMovie(encodedPath);
+  const studios = await db.getAllStudios();
+  const genres = await db.getAllGenres();
+  res.render("movies/editMovie", {
+    title: "Edit Movie",
+    movie: movie,
+    studios: studios,
+    genres: genres,
+  });
+}
+
+async function editMoviePost(req, res) {
+  // WIP
+  res.send("hi");
+};
+
+export {
+  allMoviesGet,
+  singleMovieGet,
+  addMovieGet,
+  addMoviePost,
+  editMovieGet,
+  editMoviePost,
+};

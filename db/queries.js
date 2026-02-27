@@ -14,6 +14,7 @@ async function getSingleMovie(moviePath) {
       b.genre AS genre_2,
       movies.year,
       movies.stock,
+      movies.url_path AS movie_path,
       studios.url_path AS studio_path,
       a.url_path AS genre_1_path,
       b.url_path AS genre_2_path
