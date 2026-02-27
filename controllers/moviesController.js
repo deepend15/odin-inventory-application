@@ -69,11 +69,24 @@ const addMoviePost = [
       });
     }
     const { title, studio, genre1, genre2, year, stock } = matchedData(req);
+    const moviePath = convertToPath(title);
+    const dupe = await db.checkForDupeMovie(moviePath);
+    if (dupe.length > 0) {
+      const studios = await db.getAllStudios();
+      const genres = await db.getAllGenres();
+      return res.status(400).render("movies/addMovie", {
+        title: "Add movie",
+        studios: studios,
+        genres: genres,
+        dupeType: "movie",
+        dupeName: dupe[0].title,
+        dupePath: `${dupe[0].url_path}`,
+      });
+    }
     const studioId = await db.getStudioId(studio);
     const genre1Id = await db.getGenreId(genre1);
     let genre2Id;
     if (genre2) genre2Id = await db.getGenreId(genre2);
-    const moviePath = convertToPath(title);
     await db.addMovie(
       title,
       studioId,

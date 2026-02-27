@@ -11,6 +11,7 @@
     <h1><%= title %></h1>
     <p>* = required field</p>
     <%- include('../partials/errors') %>
+    <%- include('../partials/dupes') %>
     <form action="/movies/add-movie" method="POST">
       <p>
         <label for="title">*Title:</label>

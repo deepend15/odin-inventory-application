@@ -26,6 +26,11 @@ async function getSingleMovie(moviePath) {
   return rows[0];
 }
 
+async function checkForDupeMovie(moviePath) {
+  const { rows } = await pool.query(`SELECT * FROM movies WHERE url_path = '${moviePath}'`);
+  return rows;
+}
+
 async function addMovie(
   title,
   studioId,
@@ -117,6 +122,7 @@ async function getStudioMovies(studioName) {
 export {
   getAllMovies,
   getSingleMovie,
+  checkForDupeMovie,
   addMovie,
   getAllGenres,
   getGenreId,
