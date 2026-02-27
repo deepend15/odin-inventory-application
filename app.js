@@ -1,5 +1,6 @@
 import express from "express";
 import path from "node:path";
+import moviesRouter from "./routes/moviesRouter.js";
 import genresRouter from "./routes/genresRouter.js";
 import studiosRouter from "./routes/studiosRouter.js";
 import indexRouter from "./routes/indexRouter.js";
@@ -17,6 +18,7 @@ app.use(express.static(assetsPath));
 
 app.use(express.urlencoded({ extended: true }));
 
+app.use("/movies", moviesRouter);
 app.use("/genres", genresRouter);
 app.use("/studios", studiosRouter);
 app.use("/", indexRouter);
