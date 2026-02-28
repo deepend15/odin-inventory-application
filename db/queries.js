@@ -8,6 +8,7 @@ async function getAllMovies() {
 async function getSingleMovie(moviePath) {
   const { rows } = await pool.query(
     `SELECT
+      movies.id AS movie_id,
       movies.title,
       studios.studio,
       a.genre AS genre_1,
@@ -27,8 +28,16 @@ async function getSingleMovie(moviePath) {
   return rows[0];
 }
 
-async function checkForDupeMovie(moviePath) {
-  const { rows } = await pool.query(`SELECT * FROM movies WHERE url_path = '${moviePath}'`);
+async function checkForDupeMovie(moviePath, id) {
+  if (id) {
+    const { rows } = await pool.query(
+      `SELECT * FROM movies WHERE url_path = '${moviePath}' AND id <> '${id}'`,
+    );
+    return rows;
+  }
+  const { rows } = await pool.query(
+    `SELECT * FROM movies WHERE url_path = '${moviePath}'`,
+  );
   return rows;
 }
 
@@ -42,20 +51,40 @@ async function addMovie(
   moviePath,
 ) {
   await pool.query(
-    `INSERT INTO movies (title, studio_id, genre_1_id, year, stock, url_path)
-      VALUES (
-        '${title}',
-        '${studioId}',
-        '${genre1Id}',
-        '${year}',
-        '${stock}',
-        '${moviePath}'
-      )`,
+    "INSERT INTO movies (title, studio_id, genre_1_id, year, stock, url_path) VALUES ($1, $2, $3, $4, $5, $6)",
+    [title, studioId, genre1Id, year, stock, moviePath],
   );
   if (genre2Id) {
-    await pool.query(
-      `INSERT INTO MOVIES (genre_2_id) VALUES ('${genre2Id}') WHERE url_path = '${moviePath}'`,
-    );
+    await pool.query("UPDATE movies SET genre_2_id = $1 WHERE url_path = $2", [
+      genre2Id,
+      moviePath,
+    ]);
+  }
+}
+
+async function updateMovie(
+  originalMovieId,
+  title,
+  studioId,
+  genre1Id,
+  genre2Id,
+  year,
+  stock,
+  newMoviePath,
+) {
+  await pool.query(
+    "UPDATE movies SET title = $1, studio_id = $2, genre_1_id = $3, year = $4, stock = $5, url_path = $6 WHERE id = $7",
+    [title, studioId, genre1Id, year, stock, newMoviePath, originalMovieId],
+  );
+  if (genre2Id) {
+    await pool.query("UPDATE movies SET genre_2_id = $1 WHERE id = $2", [
+      genre2Id,
+      originalMovieId,
+    ]);
+  } else {
+    await pool.query("UPDATE movies SET genre_2_id = NULL WHERE id = $1", [
+      originalMovieId,
+    ]);
   }
 }
 
@@ -125,6 +154,7 @@ export {
   getSingleMovie,
   checkForDupeMovie,
   addMovie,
+  updateMovie,
   getAllGenres,
   getGenreId,
   getGenreName,

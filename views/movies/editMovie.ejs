@@ -4,11 +4,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <%- include('../partials/favicon') %>
-    <title><%= title %>: <%= movie.title %></title>
+    <title><%= title %>: <%= headingMovieTitle %></title>
   </head>
   <body>
     <%- include('../partials/nav') %>
-    <h1><%= title %> > <%= movie.title %></h1>
+    <h1><%= title %> > <%= headingMovieTitle %></h1>
     <p>* = required field</p>
     <%- include('../partials/errors') %>
     <%- include('../partials/dupes') %>
@@ -78,7 +78,7 @@
           required
         >
       </p>
-      <button type="button">Submit</button>
+      <button>Submit</button>
     </form>
     <br>
     <a href="/movies/<%= movie.movie_path %>">&lt;&lt; Back to movie</a>

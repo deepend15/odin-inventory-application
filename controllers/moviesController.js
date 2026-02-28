@@ -87,6 +87,16 @@ const addMoviePost = [
     const genre1Id = await db.getGenreId(genre1);
     let genre2Id;
     if (genre2) genre2Id = await db.getGenreId(genre2);
+    // console.log(`
+    //   ${title}
+    //   ${studio}
+    //   ${genre1}
+    //   ${genre2}
+    //   ${year}
+    //   ${stock}
+    //   ${moviePath}
+    //   `)
+    //   res.redirect("/movies");
     await db.addMovie(
       title,
       studioId,
@@ -96,7 +106,7 @@ const addMoviePost = [
       Number(stock),
       moviePath,
     );
-    res.redirect(`movies/${moviePath}`);
+    res.redirect(`/movies/${moviePath}`);
   },
 ];
 
@@ -108,16 +118,95 @@ async function editMovieGet(req, res) {
   const genres = await db.getAllGenres();
   res.render("movies/editMovie", {
     title: "Edit Movie",
+    headingMovieTitle: movie.title,
     movie: movie,
     studios: studios,
     genres: genres,
   });
 }
 
-async function editMoviePost(req, res) {
-  // WIP
-  res.send("hi");
-};
+// async function editMoviePost(req, res) {
+//   const { moviePath } = req.params;
+//   console.log(moviePath);
+//   res.redirect(`/movies/${moviePath}`);
+// }
+
+const editMoviePost = [
+  validateMovie,
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      const { moviePath } = req.params;
+      const encodedPath = encodeString(moviePath);
+      const originalMovie = await db.getSingleMovie(encodedPath);
+      const submittedData = matchedData(req, { onlyValidData: false });
+      const studios = await db.getAllStudios();
+      const genres = await db.getAllGenres();
+      return res.status(400).render("movies/editMovie", {
+        title: "Edit Movie",
+        headingMovieTitle: originalMovie.title,
+        movie: {
+          title: submittedData.title,
+          studio: submittedData.studio,
+          genre_1: submittedData.genre1,
+          genre_2: submittedData.genre2,
+          year: submittedData.year,
+          stock: submittedData.stock,
+          movie_path: originalMovie.movie_path,
+        },
+        studios: studios,
+        genres: genres,
+        errors: errors.array(),
+      });
+    }
+    const originalMoviePath = req.params.moviePath;
+    const originalMovieEncodedPath = encodeString(originalMoviePath);
+    const originalMovie = await db.getSingleMovie(originalMovieEncodedPath);
+    const { title, studio, genre1, genre2, year, stock } = matchedData(req);
+    const newMoviePath = convertToPath(title);
+    const dupe = await db.checkForDupeMovie(
+      newMoviePath,
+      originalMovie.movie_id,
+    );
+    if (dupe.length > 0) {
+      const studios = await db.getAllStudios();
+      const genres = await db.getAllGenres();
+      return res.status(400).render("movies/editMovie", {
+        title: "Edit Movie",
+        headingMovieTitle: originalMovie.title,
+        movie: {
+          title: title,
+          studio: studio,
+          genre_1: genre1,
+          genre_2: genre2,
+          year: year,
+          stock: stock,
+          movie_path: originalMovie.movie_path,
+        },
+        studios: studios,
+        genres: genres,
+        dupeType: "movie",
+        dupeName: dupe[0].title,
+        dupePath: `/movies/${dupe[0].url_path}`,
+      });
+    }
+    const studioId = await db.getStudioId(studio);
+    const genre1Id = await db.getGenreId(genre1);
+    let genre2Id;
+    if (genre2) genre2Id = await db.getGenreId(genre2);
+    await db.updateMovie(
+      originalMovie.movie_id,
+      title,
+      studioId,
+      genre1Id,
+      genre2Id,
+      Number(year),
+      Number(stock),
+      newMoviePath,
+    );
+    res.redirect(`/movies/${newMoviePath}`);
+  },
+];
 
 export {
   allMoviesGet,
