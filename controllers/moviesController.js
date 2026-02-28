@@ -125,12 +125,6 @@ async function editMovieGet(req, res) {
   });
 }
 
-// async function editMoviePost(req, res) {
-//   const { moviePath } = req.params;
-//   console.log(moviePath);
-//   res.redirect(`/movies/${moviePath}`);
-// }
-
 const editMoviePost = [
   validateMovie,
   async (req, res) => {
