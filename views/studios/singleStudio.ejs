@@ -9,6 +9,7 @@
   <body>
     <%- include('../partials/nav') %>
     <h1>Studios > <%= title %></h1>
+    <a href="/studios/<%= studioPath %>/edit"><button>Edit studio name</button></a>
     <% if (movies.length > 0) { %>
     <ul>
       <% movies.forEach((movie) => { %>

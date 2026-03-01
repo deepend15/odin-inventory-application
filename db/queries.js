@@ -131,9 +131,9 @@ async function getStudioId(studioName) {
   return rows[0].id;
 }
 
-async function getStudioName(studioPath) {
+async function getSingleStudio(studioPath) {
   const { rows } = await pool.query(
-    `SELECT studio FROM studios WHERE url_path = '${studioPath}'`,
+    `SELECT * FROM studios WHERE url_path = '${studioPath}'`,
   );
   return rows[0];
 }
@@ -149,6 +149,33 @@ async function getStudioMovies(studioName) {
   return rows;
 }
 
+async function checkForDupeStudio(studioPath, studioId) {
+  if (studioId) {
+    const { rows } = await pool.query(
+      `SELECT * FROM studios WHERE url_path = '${studioPath}' AND id <> '${studioId}'`,
+    );
+    return rows;
+  }
+  const { rows } = await pool.query(
+    `SELECT * FROM studios WHERE url_path = '${studioPath}'`,
+  );
+  return rows;
+}
+
+async function addStudio(studio, studioPath) {
+  await pool.query("INSERT INTO studios (studio, url_path) VALUES ($1, $2)", [
+    studio,
+    studioPath,
+  ]);
+}
+
+async function updateStudio(originalStudioId, studioName, studioPath) {
+  await pool.query(
+    "UPDATE studios SET studio = $1, url_path = $2 WHERE id = $3",
+    [studioName, studioPath, originalStudioId],
+  );
+}
+
 export {
   getAllMovies,
   getSingleMovie,
@@ -161,6 +188,9 @@ export {
   getGenreMovies,
   getAllStudios,
   getStudioId,
-  getStudioName,
+  getSingleStudio,
   getStudioMovies,
+  checkForDupeStudio,
+  addStudio,
+  updateStudio,
 };

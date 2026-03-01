@@ -80,23 +80,13 @@ const addMoviePost = [
         genres: genres,
         dupeType: "movie",
         dupeName: dupe[0].title,
-        dupePath: `${dupe[0].url_path}`,
+        dupePath: `/movies/${dupe[0].url_path}`,
       });
     }
     const studioId = await db.getStudioId(studio);
     const genre1Id = await db.getGenreId(genre1);
     let genre2Id;
     if (genre2) genre2Id = await db.getGenreId(genre2);
-    // console.log(`
-    //   ${title}
-    //   ${studio}
-    //   ${genre1}
-    //   ${genre2}
-    //   ${year}
-    //   ${stock}
-    //   ${moviePath}
-    //   `)
-    //   res.redirect("/movies");
     await db.addMovie(
       title,
       studioId,

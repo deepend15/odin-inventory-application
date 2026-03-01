@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <%- include('../partials/favicon') %>
+    <title><%= title %>: <%= studio.studio %></title>
+  </head>
+  <body>
+    <%- include('../partials/nav') %>
+    <h1>Studios > <%= title %> > <%= studio.studio %></h1>
+    <%- include('../partials/errors') %>
+    <%- include('../partials/dupes') %>
+    <form action="/studios/<%= studio.url_path %>/edit" method="POST">
+      <label for="studio">Studio name:</label>
+      <input
+        type="text"
+        id="studio"
+        name="studio"
+        value="<%= studioInputValue %>"
+        required
+      />
+      <button>Submit</button>
+    </form>
+    <br>
+    <a href="/studios/<%= studio.url_path %>">&lt;&lt; Back to studio</a>
+  </body>
+</html>
