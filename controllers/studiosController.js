@@ -24,12 +24,17 @@ async function singleStudioGet(req, res) {
 
 async function addStudioGet(req, res) {
   res.render("studios/addStudio", {
-    title: "Add Studio",
+    title: "Add studio",
   });
 }
 
 const validateStudio = [
-  body("studio").trim().notEmpty().withMessage("Studio cannot be empty."),
+  body("studio")
+    .trim()
+    .notEmpty()
+    .withMessage("Studio cannot be empty.")
+    .isLength({ max: 255 })
+    .withMessage("Studio cannot be more than 255 characters."),
 ];
 
 const addStudioPost = [
@@ -38,7 +43,7 @@ const addStudioPost = [
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).render("studios/addStudio", {
-        title: "Add Studio",
+        title: "Add studio",
         errors: errors.array(),
       });
     }
@@ -47,7 +52,7 @@ const addStudioPost = [
     const dupe = await db.checkForDupeStudio(studioPath);
     if (dupe.length > 0) {
       return res.status(400).render("studios/addStudio", {
-        title: "Add Studio",
+        title: "Add studio",
         dupeType: "studio",
         dupePath: `/studios/${dupe[0].url_path}`,
         dupeName: dupe[0].studio,
@@ -63,7 +68,7 @@ async function editStudioGet(req, res) {
   const encodedPath = encodeString(studioPath);
   const studio = await db.getSingleStudio(encodedPath);
   res.render("studios/editStudio", {
-    title: "Edit Studio",
+    title: "Edit studio",
     studio: studio,
     studioInputValue: studio.studio,
   });
@@ -79,7 +84,7 @@ const editStudioPost = [
       const originalStudio = await db.getSingleStudio(encodedPath);
       const submittedData = matchedData(req, { onlyValidData: false });
       return res.status(400).render("studios/editStudio", {
-        title: "Edit Studio",
+        title: "Edit studio",
         studio: originalStudio,
         studioInputValue: submittedData.studio,
         errors: errors.array(),
@@ -93,7 +98,7 @@ const editStudioPost = [
     const dupe = await db.checkForDupeStudio(newStudioPath, originalStudio.id);
     if (dupe.length > 0) {
       return res.status(400).render("studios/editStudio", {
-        title: "Edit Studio",
+        title: "Edit studio",
         studio: originalStudio,
         studioInputValue: studio,
         dupeType: "studio",

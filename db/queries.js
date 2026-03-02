@@ -100,9 +100,9 @@ async function getGenreId(genreName) {
   return rows[0].id;
 }
 
-async function getGenreName(genrePath) {
+async function getSingleGenre(genrePath) {
   const { rows } = await pool.query(
-    `SELECT genre FROM genres WHERE url_path = '${genrePath}'`,
+    `SELECT * FROM genres WHERE url_path = '${genrePath}'`,
   );
   return rows[0];
 }
@@ -117,6 +117,33 @@ async function getGenreMovies(genre) {
     ORDER BY movies.title`,
   );
   return rows;
+}
+
+async function checkForDupeGenre(genrePath, genreId) {
+  if (genreId) {
+    const { rows } = await pool.query(
+      `SELECT * FROM genres WHERE url_path = '${genrePath}' AND id <> '${genreId}'`,
+    );
+    return rows;
+  }
+  const { rows } = await pool.query(
+    `SELECT * FROM genres WHERE url_path = '${genrePath}'`,
+  );
+  return rows;
+}
+
+async function addGenre(genre, genrePath) {
+  await pool.query("INSERT INTO genres (genre, url_path) VALUES ($1, $2)", [
+    genre,
+    genrePath,
+  ]);
+}
+
+async function updateGenre(originalGenreId, genreName, genrePath) {
+  await pool.query(
+    "UPDATE genres SET genre = $1, url_path = $2 WHERE id = $3",
+    [genreName, genrePath, originalGenreId],
+  );
 }
 
 async function getAllStudios() {
@@ -184,8 +211,11 @@ export {
   updateMovie,
   getAllGenres,
   getGenreId,
-  getGenreName,
+  getSingleGenre,
   getGenreMovies,
+  checkForDupeGenre,
+  addGenre,
+  updateGenre,
   getAllStudios,
   getStudioId,
   getSingleStudio,

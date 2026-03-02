@@ -107,7 +107,7 @@ async function editMovieGet(req, res) {
   const studios = await db.getAllStudios();
   const genres = await db.getAllGenres();
   res.render("movies/editMovie", {
-    title: "Edit Movie",
+    title: "Edit movie",
     headingMovieTitle: movie.title,
     movie: movie,
     studios: studios,
@@ -127,7 +127,7 @@ const editMoviePost = [
       const studios = await db.getAllStudios();
       const genres = await db.getAllGenres();
       return res.status(400).render("movies/editMovie", {
-        title: "Edit Movie",
+        title: "Edit movie",
         headingMovieTitle: originalMovie.title,
         movie: {
           title: submittedData.title,
@@ -156,7 +156,7 @@ const editMoviePost = [
       const studios = await db.getAllStudios();
       const genres = await db.getAllGenres();
       return res.status(400).render("movies/editMovie", {
-        title: "Edit Movie",
+        title: "Edit movie",
         headingMovieTitle: originalMovie.title,
         movie: {
           title: title,

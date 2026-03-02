@@ -8,17 +8,17 @@
   </head>
   <body>
     <%- include('../partials/nav') %>
-    <h1>Studios > <%= title %></h1>
+    <h1>Genres > <%= title %></h1>
     <%- include('../partials/errors') %>
     <%- include('../partials/dupes') %>
-    <form action="/studios/add-studio" method="POST">
+    <form action="/genres/add-genre" method="POST">
       <p>
-        <label for="studio">Studio name:</label>
-        <input type="text" id="studio" name="studio" required />
+        <label for="genre">New genre:</label>
+        <input type="text" id="genre" name="genre" required />
       </p>
       <button>Submit</button>
     </form>
-    <br>
-    <a href="/studios">&lt;&lt; Back to all studios</a>
+    <br />
+    <a href="/genres">&lt;&lt; Back to all genres</a>
   </body>
 </html>

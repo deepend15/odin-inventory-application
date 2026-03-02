@@ -9,6 +9,7 @@
   <body>
     <%- include('../partials/nav') %>
     <h1><%= title %></h1>
+    <a href="/genres/add-genre"><button>+ Add genre</button></a>
     <ul>
       <% genres.forEach((genre) => { %>
         <li><a href="/genres/<%= genre.url_path %>"><%= genre.genre %></a></li>
