@@ -3,6 +3,9 @@ import { body, validationResult, matchedData } from "express-validator";
 import { encodeString, convertToPath } from "./urlEncoding.js";
 
 async function allMoviesGet(req, res) {
+  if (req.query.delete) {
+    return res.render("movies/deleteMovieSuccess");
+  }
   const movies = await db.getAllMovies();
   res.render("movies/allMovies", {
     title: "All movies",
@@ -192,6 +195,46 @@ const editMoviePost = [
   },
 ];
 
+async function deleteMovieGet(req, res) {
+  const { moviePath } = req.params;
+  const encodedPath = encodeString(moviePath);
+  const movie = await db.getSingleMovie(encodedPath);
+  res.render("movies/deleteMovie", {
+    title: "Delete movie",
+    movie: movie,
+  });
+}
+
+const validatePassword = [
+  body("password")
+    .notEmpty()
+    .withMessage("Password is required.")
+    .custom((value) => {
+      return value === process.env.ADMIN_PW;
+    })
+    .withMessage("Incorrect password."),
+];
+
+const deleteMoviePost = [
+  validatePassword,
+  async (req, res) => {
+    const errors = validationResult(req);
+    const { moviePath } = req.params;
+    const encodedPath = encodeString(moviePath);
+    const movie = await db.getSingleMovie(encodedPath);
+    if (!errors.isEmpty()) {
+      return res.status(400).render("movies/deleteMovie", {
+        title: "Delete movie",
+        movie: movie,
+        errors: errors.array(),
+        passwordError: true,
+      });
+    }
+    await db.deleteMovie(encodedPath);
+    res.redirect("/movies?delete=true");
+  },
+];
+
 export {
   allMoviesGet,
   singleMovieGet,
@@ -199,4 +242,6 @@ export {
   addMoviePost,
   editMovieGet,
   editMoviePost,
+  deleteMovieGet,
+  deleteMoviePost,
 };

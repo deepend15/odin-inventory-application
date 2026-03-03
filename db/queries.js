@@ -88,6 +88,10 @@ async function updateMovie(
   }
 }
 
+async function deleteMovie(moviePath) {
+  await pool.query(`DELETE FROM movies WHERE url_path = '${moviePath}'`);
+}
+
 async function getAllGenres() {
   const { rows } = await pool.query("SELECT * FROM genres ORDER BY genre");
   return rows;
@@ -209,6 +213,7 @@ export {
   checkForDupeMovie,
   addMovie,
   updateMovie,
+  deleteMovie,
   getAllGenres,
   getGenreId,
   getSingleGenre,

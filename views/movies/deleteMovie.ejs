@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <%- include('../partials/favicon') %>
+    <title><%= title %>: <%= movie.title %></title>
+  </head>
+  <body>
+    <%- include('../partials/nav') %>
+    <h1><%= title %> > <%= movie.title %></h1>
+    <form action="/movies/<%= movie.movie_path %>/delete" method="POST">
+      <p>
+          <label for="password"
+            >Enter the admin password to confirm deletion of the movie "<%= movie.title %>":</label
+          >
+      </p>
+      <p><input type="password" name="password" id="password" required /></p>
+      <button>Submit</button>
+    </form>
+    <%- include('../partials/errors') %>
+    <p><a href="/movies/<%= movie.movie_path %>">&lt;&lt; Back to movie</a></p>
+  </body>
+</html>

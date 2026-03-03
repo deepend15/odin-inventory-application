@@ -1,7 +1,11 @@
 <% if (locals.errors) { %>
-  <ul>
-    <% errors.forEach(function(error) { %>
-      <li><%= error.msg %></li>
-    <% }); %>
-  </ul>
+  <% if (passwordError) { %>
+    <p><%= errors[0].msg %></p>
+  <% } else { %>
+    <ul>
+      <% errors.forEach(function(error) { %>
+        <li><%= error.msg %></li>
+      <% }); %>
+    </ul>
+  <% } %>
 <% } %>
