@@ -10,6 +10,8 @@
     <%- include('../partials/nav') %>
     <h1>Genres > <%= title %></h1>
     <a href="/genres/<%= genrePath %>/edit"><button>Edit genre name</button></a>
+    <a href="/movies/add-movie?genre=<%= genrePath %>"><button>+ Add movie</button></a>
+    <a href=""><button>- Delete genre</button></a>
     <% if (movies.length > 0) { %>
       <ul>
         <% movies.forEach((movie) => { %>

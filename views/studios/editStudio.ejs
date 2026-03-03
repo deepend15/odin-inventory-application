@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <%- include('../partials/favicon') %>
-    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="/styles.css" />
     <title><%= title %>: <%= studio.studio %></title>
   </head>
   <body>
@@ -13,14 +13,22 @@
     <%- include('../partials/errors') %>
     <%- include('../partials/dupes') %>
     <form action="/studios/<%= studio.url_path %>/edit" method="POST">
-      <label for="studio">Studio name:</label>
-      <input
-        type="text"
-        id="studio"
-        name="studio"
-        value="<%= studioInputValue %>"
-        required
-      />
+      <p>
+        <label for="studio">Studio name:</label>
+        <input
+          type="text"
+          id="studio"
+          name="studio"
+          value="<%= studioInputValue %>"
+          required
+        />
+      </p>
+      <p>
+        <label for="password">Admin password:</label>
+      </p>
+      <p>
+        <input type="password" id="password" name="password" required />
+      </p>
       <button>Submit</button>
     </form>
     <p><a href="/studios/<%= studio.url_path %>">&lt;&lt; Back to studio</a></p>

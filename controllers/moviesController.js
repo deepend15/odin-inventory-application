@@ -1,6 +1,7 @@
 import * as db from "../db/queries.js";
 import { body, validationResult, matchedData } from "express-validator";
 import { encodeString, convertToPath } from "./urlEncoding.js";
+import { validatePassword } from "./passwordValidator.js";
 
 async function allMoviesGet(req, res) {
   if (req.query.delete) {
@@ -25,13 +26,25 @@ async function singleMovieGet(req, res) {
 async function addMovieGet(req, res) {
   const studios = await db.getAllStudios();
   const genres = await db.getAllGenres();
+  let studioValue = "";
+  let genre1Value = "";
+  if (req.query.studio) {
+    const encodedPath = encodeString(req.query.studio);
+    const studio = await db.getSingleStudio(encodedPath);
+    studioValue = studio.studio;
+  }
+  if (req.query.genre) {
+    const encodedPath = encodeString(req.query.genre);
+    const genre = await db.getSingleGenre(encodedPath);
+    genre1Value = genre.genre;
+  }
   res.render("movies/addMovie", {
     title: "Add movie",
     studios: studios,
     genres: genres,
     titleValue: "",
-    studioValue: "",
-    genre1Value: "",
+    studioValue: studioValue,
+    genre1Value: genre1Value,
     genre2Value: "",
     yearValue: "",
     stockValue: "",
@@ -145,7 +158,7 @@ async function editMovieGet(req, res) {
 }
 
 const editMoviePost = [
-  validateMovie,
+  [...validatePassword, ...validateMovie],
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -230,16 +243,6 @@ async function deleteMovieGet(req, res) {
     movie: movie,
   });
 }
-
-const validatePassword = [
-  body("password")
-    .notEmpty()
-    .withMessage("Password is required.")
-    .custom((value) => {
-      return value === process.env.ADMIN_PW;
-    })
-    .withMessage("Incorrect password."),
-];
 
 const deleteMoviePost = [
   validatePassword,

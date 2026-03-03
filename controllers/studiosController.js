@@ -1,6 +1,7 @@
 import * as db from "../db/queries.js";
 import { body, validationResult, matchedData } from "express-validator";
 import { encodeString, convertToPath } from "./urlEncoding.js";
+import { validatePassword } from "./passwordValidator.js";
 
 async function allStudiosGet(req, res) {
   const studios = await db.getAllStudios();
@@ -25,6 +26,7 @@ async function singleStudioGet(req, res) {
 async function addStudioGet(req, res) {
   res.render("studios/addStudio", {
     title: "Add studio",
+    studioValue: "",
   });
 }
 
@@ -38,12 +40,16 @@ const validateStudio = [
 ];
 
 const addStudioPost = [
-  validateStudio,
+  [
+    ...validatePassword,
+    ...validateStudio,
+  ],
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).render("studios/addStudio", {
         title: "Add studio",
+        studioValue: req.body.studio,
         errors: errors.array(),
       });
     }
@@ -53,13 +59,14 @@ const addStudioPost = [
     if (dupe.length > 0) {
       return res.status(400).render("studios/addStudio", {
         title: "Add studio",
+        studioValue: req.body.studio,
         dupeType: "studio",
         dupePath: `/studios/${dupe[0].url_path}`,
         dupeName: dupe[0].studio,
       });
     }
     await db.addStudio(studio, studioPath);
-    res.redirect("/studios");
+    res.redirect(`/studios/${studioPath}`);
   },
 ];
 
@@ -75,7 +82,10 @@ async function editStudioGet(req, res) {
 }
 
 const editStudioPost = [
-  validateStudio,
+  [
+    ...validatePassword,
+    ...validateStudio,
+  ],
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {

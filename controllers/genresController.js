@@ -1,6 +1,7 @@
 import * as db from "../db/queries.js";
 import { body, validationResult, matchedData } from "express-validator";
 import { encodeString, convertToPath } from "./urlEncoding.js";
+import { validatePassword } from "./passwordValidator.js";
 
 async function allGenresGet(req, res) {
   const genres = await db.getAllGenres();
@@ -25,6 +26,7 @@ async function singleGenreGet(req, res) {
 async function addGenreGet(req, res) {
   res.render("genres/addGenre", {
     title: "Add genre",
+    genreValue: "",
   });
 }
 
@@ -38,12 +40,16 @@ const validateGenre = [
 ];
 
 const addGenrePost = [
-  validateGenre,
+  [
+    ...validateGenre,
+    ...validatePassword,
+  ],
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).render("genres/addGenre", {
         title: "Add genre",
+        genreValue: req.body.genre,
         errors: errors.array(),
       });
     }
@@ -53,13 +59,14 @@ const addGenrePost = [
     if (dupe.length > 0) {
       return res.status(400).render("genres/addGenre", {
         title: "Add genre",
+        genreValue: req.body.genre,
         dupeType: "genre",
         dupePath: `/genres/${dupe[0].url_path}`,
         dupeName: dupe[0].genre,
       });
     }
     await db.addGenre(genre, genrePath);
-    res.redirect("/genres");
+    res.redirect(`/genres/${genrePath}`);
   },
 ];
 
@@ -75,7 +82,10 @@ async function editGenreGet(req, res) {
 }
 
 const editGenrePost = [
-  validateGenre,
+  [
+    ...validateGenre,
+    ...validatePassword,
+  ],
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
