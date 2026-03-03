@@ -82,7 +82,7 @@ const editGenrePost = [
       const { genrePath } = req.params;
       const encodedPath = encodeString(genrePath);
       const originalGenre = await db.getSingleGenre(encodedPath);
-      const submittedData = matchedData(req, { onlyValidData: false });
+      const submittedData = req.body;
       return res.status(400).render("genres/editGenre", {
         title: "Edit genre",
         genre: originalGenre,

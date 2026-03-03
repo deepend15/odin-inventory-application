@@ -29,11 +29,18 @@ async function addMovieGet(req, res) {
     title: "Add movie",
     studios: studios,
     genres: genres,
+    titleValue: "",
+    studioValue: "",
+    genre1Value: "",
+    genre2Value: "",
+    yearValue: "",
+    stockValue: "",
   });
 }
 
 const emptyErr = "cannot be empty.";
 const titleErr = "cannot be more than 255 characters.";
+const genre2Err = "cannot be the same as the primary genre.";
 const yearErr = "must be a number between 1878 and 2500.";
 const stockErr = "must be a number between 1 and 2000.";
 
@@ -46,7 +53,12 @@ const validateMovie = [
     .withMessage(`Title ${titleErr}`),
   body("studio").notEmpty().withMessage(`Studio ${emptyErr}`),
   body("genre1").notEmpty().withMessage(`Primary genre ${emptyErr}`),
-  body("genre2").optional(),
+  body("genre2")
+    .optional({ values: "falsy" })
+    .custom((value, { req }) => {
+      return value !== req.body.genre1;
+    })
+    .withMessage(`Secondary genre ${genre2Err}`),
   body("year")
     .trim()
     .isInt({ min: 1878, max: 2500 })
@@ -64,10 +76,17 @@ const addMoviePost = [
     if (!errors.isEmpty()) {
       const studios = await db.getAllStudios();
       const genres = await db.getAllGenres();
+      const { title, studio, genre1, genre2, year, stock } = req.body;
       return res.status(400).render("movies/addMovie", {
         title: "Add movie",
         studios: studios,
         genres: genres,
+        titleValue: title,
+        studioValue: studio,
+        genre1Value: genre1,
+        genre2Value: genre2,
+        yearValue: year,
+        stockValue: stock,
         errors: errors.array(),
       });
     }
@@ -77,10 +96,17 @@ const addMoviePost = [
     if (dupe.length > 0) {
       const studios = await db.getAllStudios();
       const genres = await db.getAllGenres();
+      const { title, studio, genre1, genre2, year, stock } = req.body;
       return res.status(400).render("movies/addMovie", {
         title: "Add movie",
         studios: studios,
         genres: genres,
+        titleValue: title,
+        studioValue: studio,
+        genre1Value: genre1,
+        genre2Value: genre2,
+        yearValue: year,
+        stockValue: stock,
         dupeType: "movie",
         dupeName: dupe[0].title,
         dupePath: `/movies/${dupe[0].url_path}`,
@@ -126,7 +152,7 @@ const editMoviePost = [
       const { moviePath } = req.params;
       const encodedPath = encodeString(moviePath);
       const originalMovie = await db.getSingleMovie(encodedPath);
-      const submittedData = matchedData(req, { onlyValidData: false });
+      const submittedData = req.body;
       const studios = await db.getAllStudios();
       const genres = await db.getAllGenres();
       return res.status(400).render("movies/editMovie", {
@@ -227,7 +253,6 @@ const deleteMoviePost = [
         title: "Delete movie",
         movie: movie,
         errors: errors.array(),
-        passwordError: true,
       });
     }
     await db.deleteMovie(encodedPath);

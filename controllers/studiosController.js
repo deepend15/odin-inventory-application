@@ -82,7 +82,7 @@ const editStudioPost = [
       const { studioPath } = req.params;
       const encodedPath = encodeString(studioPath);
       const originalStudio = await db.getSingleStudio(encodedPath);
-      const submittedData = matchedData(req, { onlyValidData: false });
+      const submittedData = req.body;
       return res.status(400).render("studios/editStudio", {
         title: "Edit studio",
         studio: originalStudio,
