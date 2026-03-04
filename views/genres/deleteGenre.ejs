@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <%- include('../partials/favicon') %>
+    <link rel="stylesheet" href="/styles.css" />
+    <title><%= title %>: <%= genre.genre %></title>
+  </head>
+  <body>
+    <%- include('../partials/nav') %>
+    <h1>Genres > <%= title %> > <%= genre.genre %></h1>
+    <% if (genre.genre === "missing") { %>
+      <p>Invalid request.</p>
+      <p><a href="/genres">&lt;&lt; All genres</a></p>
+    <% } else { %>
+        <p>
+          <strong>WARNING:</strong> If there are any <%= genre.genre %> movies for which <%= genre.genre %> is the <strong>only</strong> genre listed, deleting <%= genre.genre %> will set the genre name to "missing" for all of these movies.
+        </p>
+        <p>
+          If this is the case, it is recommended to edit the genre name for each individual <a href="/genres/<%= genre.url_path %>">movie</a> for which <%= genre.genre %> is the only genre listed, prior to deleting the genre.
+        </p>
+        <p>Please note, movies that have another genre listed other than <%= genre.genre %> (regardless if it's the primary or secondary genre), will have that genre listed as the primary genre after deletion of <%= genre.genre %>.</p>
+        <p>
+          If you would like to proceed with deleting the <%= genre.genre %> genre, enter the admin password below.
+        </p>
+        <form action="/genres/<%= genre.url_path %>/delete" method="POST">
+        <p>
+            <label for="password">Admin password:</label>
+        </p>
+        <p><input type="password" name="password" id="password" required /></p>
+        <button>Submit</button>
+        </form>
+        <%- include('../partials/errors') %>
+        <p><a href="/genres/<%= genre.url_path %>">&lt;&lt; Back to genre</a></p>
+    <% } %>
+  </body>
+</html>

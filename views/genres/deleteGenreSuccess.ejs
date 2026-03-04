@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <%- include('../partials/favicon') %>
+    <title>Delete confirmation</title>
+  </head>
+  <body>
+    <%- include('../partials/nav') %>
+    <h1>Delete genre</h1>
+    <p>Genre successfully deleted.</p>
+    <% if (missingGenreMovies) { %>
+      <p><strong>Alert:</strong> there are now movies with a missing genre. It is strongly recommended to edit each movie and add a new genre to each:</p>
+      <ul>
+        <li><a href="/genres/missing">Missing genre movies</a></li>
+      </ul>
+    <% } %>
+    <p><a href="/genres">&lt;&lt; All genres</a></p>
+    <p><a href="/">&lt;&lt; Home</a></p>
+  </body>
+</html>

@@ -12,7 +12,7 @@
     <% if (title !== "missing") { %>
       <a href="/genres/<%= genrePath %>/edit"><button>Edit genre name</button></a>
       <a href="/movies/add-movie?genre=<%= genrePath %>"><button>+ Add movie</button></a>
-      <a href=""><button>- Delete genre</button></a>
+      <a href="/genres/<%= genrePath %>/delete"><button>- Delete genre</button></a>
     <% } %>
     <% if (movies.length > 0) { %>
       <ul>

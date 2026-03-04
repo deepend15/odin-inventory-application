@@ -159,6 +159,52 @@ async function updateGenre(originalGenreId, genreName, genrePath) {
   );
 }
 
+async function getGenre2Movies(genreId) {
+  const { rows } = await pool.query(
+    "SELECT * FROM movies WHERE genre_2_id = $1",
+    [genreId],
+  );
+  return rows;
+}
+async function getGenre1MoviesWithGenre2(genreId) {
+  const { rows } = await pool.query(
+    "SELECT * FROM movies WHERE genre_1_id = $1 AND genre_2_id IS NOT NULL",
+    [genreId],
+  );
+  return rows;
+}
+
+async function getGenre1MoviesWithNoGenre2(genreId) {
+  const { rows } = await pool.query(
+    "SELECT * FROM movies WHERE genre_1_id = $1 AND genre_2_id IS NULL", [genreId]);
+  return rows;
+}
+
+async function deleteGenre(genreId, genre2Movies, genre1With2, genre1Without2) {
+  await pool.query("DELETE FROM genres WHERE id = $1", [genreId]);
+  if (genre2Movies.length > 0) {
+    await pool.query(
+      "UPDATE movies SET genre_2_id = NULL WHERE genre_2_id = $1",
+      [genreId],
+    );
+  }
+  if (genre1With2.length > 0) {
+    await pool.query(
+      `UPDATE movies
+      SET genre_1_id = genre_2_id,
+      genre_2_id = NULL
+      WHERE genre_1_id = $1
+      AND genre_2_id IS NOT NULL`,
+      [genreId],
+    );
+  }
+  if (genre1Without2.length > 0) {
+    await pool.query("UPDATE movies SET genre_1_id = 1 WHERE genre_1_id = $1", [
+      genreId,
+    ]);
+  }
+}
+
 async function getAllStudios() {
   const { rows } = await pool.query(
     "SELECT * FROM studios WHERE studio <> 'missing' ORDER BY studio",
@@ -226,7 +272,9 @@ async function updateStudio(originalStudioId, studioName, studioPath) {
 async function deleteStudio(studioId, studioMovies) {
   await pool.query("DELETE FROM studios WHERE id = $1", [studioId]);
   if (studioMovies.length > 0) {
-    await pool.query("UPDATE movies SET studio_id = 1 WHERE studio_id = $1", [studioId]);
+    await pool.query("UPDATE movies SET studio_id = 1 WHERE studio_id = $1", [
+      studioId,
+    ]);
   }
 }
 
@@ -245,6 +293,10 @@ export {
   checkForDupeGenre,
   addGenre,
   updateGenre,
+  getGenre2Movies,
+  getGenre1MoviesWithGenre2,
+  getGenre1MoviesWithNoGenre2,
+  deleteGenre,
   getAllStudios,
   checkForMissingStudioMovies,
   getStudioId,

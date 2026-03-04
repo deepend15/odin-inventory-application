@@ -4,6 +4,13 @@ import { encodeString, convertToPath } from "./urlEncoding.js";
 import { validatePassword } from "./passwordValidator.js";
 
 async function allGenresGet(req, res) {
+  if (req.query.delete) {
+    let missingGenreMovies;
+    if (req.query.missing === "true") missingGenreMovies = true;
+    return res.render("genres/deleteGenreSuccess", {
+      missingGenreMovies: missingGenreMovies,
+    });
+  }
   const genres = await db.getAllGenres();
   let includeMissing;
   const missingGenreMovies = await db.checkForMissingGenreMovies();
@@ -123,6 +130,48 @@ const editGenrePost = [
   },
 ];
 
+async function deleteGenreGet(req, res) {
+  const { genrePath } = req.params;
+  const encodedPath = encodeString(genrePath);
+  const genre = await db.getSingleGenre(encodedPath);
+  res.render("genres/deleteGenre", {
+    title: "Delete genre",
+    genre: genre,
+  });
+}
+
+const deleteGenrePost = [
+  validatePassword,
+  async (req, res) => {
+    const errors = validationResult(req);
+    const { genrePath } = req.params;
+    const encodedPath = encodeString(genrePath);
+    const genre = await db.getSingleGenre(encodedPath);
+    if (!errors.isEmpty()) {
+      return res.status(400).render("genres/deleteGenre", {
+        title: "Delete genre",
+        genre: genre,
+        errors: errors.array(),
+      });
+    }
+    const genre2Movies = await db.getGenre2Movies(genre.id);
+    const genre1MoviesWithGenre2 = await db.getGenre1MoviesWithGenre2(genre.id);
+    const genre1MoviesWithNoGenre2 = await db.getGenre1MoviesWithNoGenre2(
+      genre.id,
+    );
+    await db.deleteGenre(
+      genre.id,
+      genre2Movies,
+      genre1MoviesWithGenre2,
+      genre1MoviesWithNoGenre2,
+    );
+    if (genre1MoviesWithNoGenre2.length > 0) {
+      return res.redirect("/genres?delete=true&missing=true");
+    }
+    res.redirect("/genres?delete=true&missing=false");
+  },
+];
+
 export {
   allGenresGet,
   singleGenreGet,
@@ -130,4 +179,6 @@ export {
   addGenrePost,
   editGenreGet,
   editGenrePost,
+  deleteGenreGet,
+  deleteGenrePost,
 };
