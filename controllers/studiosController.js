@@ -4,6 +4,13 @@ import { encodeString, convertToPath } from "./urlEncoding.js";
 import { validatePassword } from "./passwordValidator.js";
 
 async function allStudiosGet(req, res) {
+  if (req.query.delete) {
+    let missingStudioMovies;
+    if (req.query.missing === "true") missingStudioMovies = true;
+    return res.render("studios/deleteStudioSuccess", {
+      missingStudioMovies: missingStudioMovies,
+    });
+  }
   const studios = await db.getAllStudios();
   let includeMissing;
   const missingStudioMovies = await db.checkForMissingStudioMovies();
@@ -147,6 +154,12 @@ const deleteStudioPost = [
         errors: errors.array(),
       });
     }
+    const studioMovies = await db.getStudioMovies(studio.studio);
+    await db.deleteStudio(studio.id, studioMovies);
+    if (studioMovies.length > 0) {
+      return res.redirect("/studios?delete=true&missing=true");
+    }
+    res.redirect("/studios?delete=true&missing=false");
   },
 ];
 
@@ -158,4 +171,5 @@ export {
   editStudioGet,
   editStudioPost,
   deleteStudioGet,
+  deleteStudioPost,
 };
