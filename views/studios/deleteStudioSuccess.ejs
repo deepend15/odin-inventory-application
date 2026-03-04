@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <%- include('../partials/favicon') %>
+    <link rel="stylesheet" href="/styles.css">
     <title>Delete confirmation</title>
   </head>
   <body>
@@ -11,7 +12,7 @@
     <h1>Delete studio</h1>
     <p>Studio successfully deleted.</p>
     <% if (missingStudioMovies) { %>
-      <p><strong>Alert:</strong> there are now movies with a missing studio. It is strongly recommended to edit each movie and add a new studio to each:</p>
+      <p><span class="missing-data"><strong>Alert:</strong></span> there are now movies with a missing studio. It is strongly recommended to edit each movie and add a new studio to each:</p>
       <ul>
         <li><a href="/studios/missing">Missing studio movies</a></li>
       </ul>

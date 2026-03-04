@@ -4,16 +4,20 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <%- include('../partials/favicon') %>
+    <link rel="stylesheet" href="/styles.css">
     <title><%= title %></title>
   </head>
   <body>
     <%- include('../partials/nav') %>
+    <% if (includeMissing) { %>
+      <p><span class="missing-data"><strong>Alert:</strong></span> 1 or more movies are missing a studio. Please update the studios for the movies listed at the link below:</p>
+      <ul>
+        <li><a href="/studios/missing">Movies with no studio</a></li>
+      </ul>
+    <% } %>
     <h1><%= title %></h1>
     <a href="/studios/add-studio"><button>+ Add studio</button></a>
     <ul>
-      <% if (includeMissing) { %>
-        <li><a href="/studios/missing">***MISSING</a></li>
-      <% } %>
       <% studios.forEach((studio) => { %>
         <li>
           <a href="/studios/<%= studio.url_path %>"><%= studio.studio %></a>

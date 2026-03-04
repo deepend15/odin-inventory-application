@@ -5,6 +5,11 @@ async function getAllMovies() {
   return rows;
 }
 
+async function getMissingDataMovies() {
+  const { rows } = await pool.query("SELECT * FROM movies WHERE genre_1_id = 1 OR studio_id = 1 ORDER BY title");
+  return rows;
+}
+
 async function getSingleMovie(moviePath) {
   const { rows } = await pool.query(
     `SELECT
@@ -280,6 +285,7 @@ async function deleteStudio(studioId, studioMovies) {
 
 export {
   getAllMovies,
+  getMissingDataMovies,
   getSingleMovie,
   checkForDupeMovie,
   addMovie,

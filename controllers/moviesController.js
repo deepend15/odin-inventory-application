@@ -7,10 +7,14 @@ async function allMoviesGet(req, res) {
   if (req.query.delete) {
     return res.render("movies/deleteMovieSuccess");
   }
+  let missingDataMovies;
+  const results = await db.getMissingDataMovies();
+  if (results.length > 0) missingDataMovies = results;
   const movies = await db.getAllMovies();
   res.render("movies/allMovies", {
     title: "All movies",
     movies: movies,
+    missingDataMovies: missingDataMovies,
   });
 }
 

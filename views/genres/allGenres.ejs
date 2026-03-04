@@ -4,16 +4,20 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <%- include('../partials/favicon') %>
+    <link rel="stylesheet" href="/styles.css">
     <title><%= title %></title>
   </head>
   <body>
     <%- include('../partials/nav') %>
+    <% if (includeMissing) { %>
+      <p><span class="missing-data"><strong>Alert:</strong></span> 1 or more movies are missing a genre. Please update the genres for the movies listed at the link below:</p>
+      <ul>
+        <li><a href="/genres/missing">Movies with no genre</a></li>
+      </ul>
+    <% } %>
     <h1><%= title %></h1>
     <a href="/genres/add-genre"><button>+ Add genre</button></a>
     <ul>
-      <% if (includeMissing) { %>
-        <li><a href="/genres/missing">***MISSING</a></li>
-      <% } %>
       <% genres.forEach((genre) => { %>
         <li><a href="/genres/<%= genre.url_path %>"><%= genre.genre %></a></li>
       <% }); %>

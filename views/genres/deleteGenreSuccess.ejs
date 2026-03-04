@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <%- include('../partials/favicon') %>
+    <link rel="stylesheet" href="/styles.css">
     <title>Delete confirmation</title>
   </head>
   <body>
@@ -11,7 +12,7 @@
     <h1>Delete genre</h1>
     <p>Genre successfully deleted.</p>
     <% if (missingGenreMovies) { %>
-      <p><strong>Alert:</strong> there are now movies with a missing genre. It is strongly recommended to edit each movie and add a new genre to each:</p>
+      <p><span class="missing-data"><strong>Alert:</strong></span> there are now movies with a missing genre. It is strongly recommended to edit each movie and add a new genre to each:</p>
       <ul>
         <li><a href="/genres/missing">Missing genre movies</a></li>
       </ul>

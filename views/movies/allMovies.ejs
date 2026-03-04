@@ -4,17 +4,34 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <%- include('../partials/favicon') %>
+    <link rel="stylesheet" href="/styles.css">
     <title><%= title %></title>
   </head>
   <body>
     <%- include('../partials/nav') %>
+    <% if (missingDataMovies) { %>
+      <p><span class="missing-data"><strong>Alert:</strong></span> you have movies with missing data. Please update the appropriate fields for the movie(s) below:</p>
+      <ul>
+        <% missingDataMovies.forEach((movie) => { %>
+          <li>
+            <a href="/movies/<%= movie.url_path %>">***<%= movie.title %></a>
+          </li>
+        <% }); %>
+      </ul>
+    <% } %>
     <h1><%= title %></h1>
     <a href="/movies/add-movie"><button>+ Add movie</button></a>
     <ul>
       <% movies.forEach((movie) => { %>
-        <li>
-          <a href="/movies/<%= movie.url_path %>"><%= movie.title %></a>
-        </li>
+        <% if (movie.genre_1_id === 1 || movie.studio_id === 1) { %>
+          <li>
+            <a href="/movies/<%= movie.url_path %>">***<%= movie.title %></a>
+          </li>
+        <% } else { %>
+          <li>
+            <a href="/movies/<%= movie.url_path %>"><%= movie.title %></a>
+          </li>
+        <% } %>
       <% }); %>
     </ul>
   </body>
