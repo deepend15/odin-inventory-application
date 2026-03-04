@@ -165,7 +165,7 @@ async function getAllStudios() {
 async function checkForMissingStudioMovies() {
   const { rows } = await pool.query("SELECT * FROM movies WHERE studio_id = 0");
   // CHANGE TO BELOW
-  // const { rows } = await pool.query("SELECT * FROM movies WHERE studio_id = 0");
+  // const { rows } = await pool.query("SELECT * FROM movies WHERE studio_id = 1");
   return rows;
 }
 
