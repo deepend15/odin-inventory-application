@@ -12,25 +12,30 @@
     <h1>Genres > <%= title %> > <%= genre.genre %></h1>
     <%- include('../partials/errors') %>
     <%- include('../partials/dupes') %>
-    <form action="/genres/<%= genre.url_path %>/edit" method="POST">
-      <p>
-        <label for="genre">Genre name:</label>
-        <input
-          type="text"
-          id="genre"
-          name="genre"
-          value="<%= genreInputValue %>"
-          required
-        />
-      </p>
-      <p>
-        <label for="password">Admin password:</label>
-      </p>
-      <p>
-        <input type="password" id="password" name="password" required />
-      </p>
-      <button>Submit</button>
-    </form>
-    <p><a href="/genres/<%= genre.url_path %>">&lt;&lt; Back to genre</a></p>
+    <% if (genre.genre === "missing") { %>
+      <p>Invalid request.</p>
+      <p><a href="/genres">&lt;&lt; All genres</a></p>
+    <% } else { %>
+      <form action="/genres/<%= genre.url_path %>/edit" method="POST">
+        <p>
+          <label for="genre">Genre name:</label>
+          <input
+            type="text"
+            id="genre"
+            name="genre"
+            value="<%= genreInputValue %>"
+            required
+          />
+        </p>
+        <p>
+          <label for="password">Admin password:</label>
+        </p>
+        <p>
+          <input type="password" id="password" name="password" required />
+        </p>
+        <button>Submit</button>
+      </form>
+      <p><a href="/genres/<%= genre.url_path %>">&lt;&lt; Back to genre</a></p>
+    <% } %>
   </body>
 </html>

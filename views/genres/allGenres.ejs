@@ -11,6 +11,9 @@
     <h1><%= title %></h1>
     <a href="/genres/add-genre"><button>+ Add genre</button></a>
     <ul>
+      <% if (includeMissing) { %>
+        <li><a href="/genres/missing">***MISSING</a></li>
+      <% } %>
       <% genres.forEach((genre) => { %>
         <li><a href="/genres/<%= genre.url_path %>"><%= genre.genre %></a></li>
       <% }); %>

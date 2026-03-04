@@ -5,9 +5,13 @@ import { validatePassword } from "./passwordValidator.js";
 
 async function allGenresGet(req, res) {
   const genres = await db.getAllGenres();
+  let includeMissing;
+  const missingGenreMovies = await db.checkForMissingGenreMovies();
+  if (missingGenreMovies.length > 0) includeMissing = true;
   res.render("genres/allGenres", {
     title: "Genres",
     genres: genres,
+    includeMissing: includeMissing,
   });
 }
 
@@ -36,14 +40,15 @@ const validateGenre = [
     .notEmpty()
     .withMessage("Genre cannot be empty.")
     .isLength({ max: 255 })
-    .withMessage("Genre cannot be more than 255 characters."),
+    .withMessage("Genre cannot be more than 255 characters.")
+    .custom((value) => {
+      return value.toLowerCase() !== "missing";
+    })
+    .withMessage(`Genre cannot be set to "Missing."`),
 ];
 
 const addGenrePost = [
-  [
-    ...validateGenre,
-    ...validatePassword,
-  ],
+  [...validateGenre, ...validatePassword],
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -82,10 +87,7 @@ async function editGenreGet(req, res) {
 }
 
 const editGenrePost = [
-  [
-    ...validateGenre,
-    ...validatePassword,
-  ],
+  [...validateGenre, ...validatePassword],
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {

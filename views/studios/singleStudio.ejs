@@ -9,9 +9,11 @@
   <body>
     <%- include('../partials/nav') %>
     <h1>Studios > <%= title %></h1>
-    <a href="/studios/<%= studioPath %>/edit"><button>Edit studio name</button></a>
-    <a href="/movies/add-movie?studio=<%= studioPath %>"><button>+ Add movie</button></a>
-    <a href=""><button>- Delete studio</button></a>
+    <% if (title !== "missing") { %>
+      <a href="/studios/<%= studioPath %>/edit"><button>Edit studio name</button></a>
+      <a href="/movies/add-movie?studio=<%= studioPath %>"><button>+ Add movie</button></a>
+      <a href="/studios/<%= studioPath %>/delete"><button>- Delete studio</button></a>
+    <% } %>
     <% if (movies.length > 0) { %>
     <ul>
       <% movies.forEach((movie) => { %>

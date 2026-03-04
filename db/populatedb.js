@@ -26,6 +26,7 @@ CREATE TABLE IF NOT EXISTS genres (
 
 INSERT INTO studios (studio, url_path)
   VALUES
+    ('missing', 'missing'),
     ('Paramount Pictures', 'paramount-pictures'),
     ('Disney', 'disney'),
     ('Sony', 'sony'),
@@ -36,6 +37,7 @@ INSERT INTO studios (studio, url_path)
 
 INSERT INTO genres (genre, url_path)
   VALUES
+    ('missing', 'missing'),
     ('Action/Adventure', 'action%2Fadventure'),
     ('Sci-Fi', 'sci-fi'),
     ('Animated', 'animated'),
@@ -55,12 +57,12 @@ INSERT INTO genres (genre, url_path)
 
 INSERT INTO movies (title, studio_id, genre_1_id, genre_2_id, year, url_path)
   VALUES
-    ('The Godfather', 1, 4, 12, 1972, 'the-godfather'),
-    ('Coco', 2, 3, 11, 2017, 'coco'),
-    ('Spider-Man (2002)', 3, 1, NULL, 2002, 'spider-man-2002'), 
-    ('Harry Potter and the Sorceror''s Stone', 4, 6, NULL, 2001, 'harry-potter-and-the-sorcerors-stone'),
-    ('Everything Everywhere All At Once', 5, 1, 2, 2022, 'everything-everywhere-all-at-once'),
-    ('The Notebook', 6, 5, NULL, 2004, 'the-notebook');
+    ('The Godfather', 2, 5, 13, 1972, 'the-godfather'),
+    ('Coco', 3, 4, 12, 2017, 'coco'),
+    ('Spider-Man (2002)', 4, 2, NULL, 2002, 'spider-man-2002'), 
+    ('Harry Potter and the Sorceror''s Stone', 5, 7, NULL, 2001, 'harry-potter-and-the-sorcerors-stone'),
+    ('Everything Everywhere All At Once', 6, 2, 3, 2022, 'everything-everywhere-all-at-once'),
+    ('The Notebook', 7, 6, NULL, 2004, 'the-notebook');
 `;
 
 async function main() {

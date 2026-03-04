@@ -93,7 +93,14 @@ async function deleteMovie(moviePath) {
 }
 
 async function getAllGenres() {
-  const { rows } = await pool.query("SELECT * FROM genres ORDER BY genre");
+  const { rows } = await pool.query("SELECT * FROM genres WHERE genre <> 'missing' ORDER BY genre");
+  return rows;
+}
+
+async function checkForMissingGenreMovies() {
+  const { rows } = await pool.query("SELECT * FROM movies WHERE genre_1_id = 0");
+  // CHANGE TO BELOW
+  // const { rows } = await pool.query("SELECT * FROM movies WHERE genre_1_id = 1");
   return rows;
 }
 
@@ -151,7 +158,14 @@ async function updateGenre(originalGenreId, genreName, genrePath) {
 }
 
 async function getAllStudios() {
-  const { rows } = await pool.query("SELECT * FROM studios ORDER BY studio");
+  const { rows } = await pool.query("SELECT * FROM studios WHERE studio <> 'missing' ORDER BY studio");
+  return rows;
+}
+
+async function checkForMissingStudioMovies() {
+  const { rows } = await pool.query("SELECT * FROM movies WHERE studio_id = 0");
+  // CHANGE TO BELOW
+  // const { rows } = await pool.query("SELECT * FROM movies WHERE studio_id = 0");
   return rows;
 }
 
@@ -215,6 +229,7 @@ export {
   updateMovie,
   deleteMovie,
   getAllGenres,
+  checkForMissingGenreMovies,
   getGenreId,
   getSingleGenre,
   getGenreMovies,
@@ -222,6 +237,7 @@ export {
   addGenre,
   updateGenre,
   getAllStudios,
+  checkForMissingStudioMovies,
   getStudioId,
   getSingleStudio,
   getStudioMovies,

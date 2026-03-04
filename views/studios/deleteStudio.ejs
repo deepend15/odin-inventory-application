@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <%- include('../partials/favicon') %>
+    <link rel="stylesheet" href="/styles.css" />
+    <title><%= title %>: <%= studio.studio %></title>
+  </head>
+  <body>
+    <%- include('../partials/nav') %>
+    <h1>Studios > <%= title %> > <%= studio.studio %></h1>
+    <% if (studio.studio === "missing") { %>
+      <p>Invalid request.</p>
+      <p><a href="/studios">&lt;&lt; All studios</a></p>
+    <% } else { %>
+        <p>
+        WARNING: If there are currently any movies under <%= studio.studio %>,
+        deleting it will set the studio name to "missing" for <strong>all</strong> of
+        these movies.
+        </p>
+        <p>If this is the case, it is recommended to either:</p>
+        <ul>
+        <li>
+            <a href="/studios/<%= studio.url_path %>/edit">Rename the studio</a>, or:
+        </li>
+        <li>
+            Edit the studio name for each individual <a href="/studios/<%= studio.url_path %>">movie</a>, prior to deleting <%=
+            studio.studio %>.
+        </li>
+        </ul>
+        <p>
+        If you would like to proceed with deleting <%= studio.studio %>, enter the
+        admin password below.
+        </p>
+        <form action="/studios/<%= studio.url_path %>/delete" method="POST">
+        <p>
+            <label for="password">Admin password:</label>
+        </p>
+        <p><input type="password" name="password" id="password" required /></p>
+        <button>Submit</button>
+        </form>
+        <%- include('../partials/errors') %>
+        <p><a href="/studios/<%= studio.url_path %>">&lt;&lt; Back to studio</a></p>
+    <% } %>
+  </body>
+</html>

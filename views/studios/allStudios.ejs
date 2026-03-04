@@ -11,6 +11,9 @@
     <h1><%= title %></h1>
     <a href="/studios/add-studio"><button>+ Add studio</button></a>
     <ul>
+      <% if (includeMissing) { %>
+        <li><a href="/studios/missing">***MISSING/a></li>
+      <% } %>
       <% studios.forEach((studio) => { %>
         <li>
           <a href="/studios/<%= studio.url_path %>"><%= studio.studio %></a>
