@@ -24,24 +24,29 @@
     <form action="/movies" method="GET">
       <p>
         <label for="search">Search for a movie:</label>
-        <input type="text" name="search" id="search" />
+        <input type="text" name="search" id="search" value="<%= searchInputValue %>" />
         <button>Search</button>
       </p>
     </form>
-    <ul>
-      <% if (movies.length > 0) { %>
-        <% movies.forEach((movie) => { %>
-          <% if (movie.genre_1_id === 1 || movie.studio_id === 1) { %>
-            <li>
-              <a href="/movies/<%= movie.url_path %>">***<%= movie.title %></a>
-            </li>
-          <% } else { %>
-            <li>
-              <a href="/movies/<%= movie.url_path %>"><%= movie.title %></a>
-            </li>
-          <% } %>
-        <% }); %>
+      <% if (searchResults.length > 0) { %>
+        <h2>Search results:</h2>
+        <ul>
+          <% searchResults.forEach((movie) => { %>
+            <% if (movie.genre_1_id === 1 || movie.studio_id === 1) { %>
+              <li>
+                <a href="/movies/<%= movie.url_path %>">***<%= movie.title %></a>
+              </li>
+            <% } else { %>
+              <li>
+                <a href="/movies/<%= movie.url_path %>"><%= movie.title %></a>
+              </li>
+            <% } %>
+          <% }); %>
+        </ul>
+        <p><a href="/movies">&lt;&lt; All movies</a></p>
+      <% } else { %>
+        <h2>No search results found.</h2>
+        <p>Try a different search above, or <a href="/movies">go back to all movies.</a></p>
       <% } %>
-    </ul>
   </body>
 </html>

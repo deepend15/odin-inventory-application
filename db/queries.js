@@ -6,10 +6,20 @@ async function getAllMovies() {
 }
 
 async function getMissingDataMovies() {
-  const { rows } = await pool.query("SELECT * FROM movies WHERE genre_1_id = 1 OR studio_id = 1 ORDER BY title");
+  const { rows } = await pool.query(
+    "SELECT * FROM movies WHERE genre_1_id = 1 OR studio_id = 1 ORDER BY title",
+  );
   return rows;
 }
 
+async function getSearchResults(movieTitle) {
+  const { rows } = await pool.query(
+    "SELECT * FROM movies WHERE LOWER(title) LIKE '%' || $1 ||'%' ORDER BY title",
+    [movieTitle],
+  );
+  return rows;
+}
+null;
 async function getSingleMovie(moviePath) {
   const { rows } = await pool.query(
     `SELECT
@@ -181,7 +191,9 @@ async function getGenre1MoviesWithGenre2(genreId) {
 
 async function getGenre1MoviesWithNoGenre2(genreId) {
   const { rows } = await pool.query(
-    "SELECT * FROM movies WHERE genre_1_id = $1 AND genre_2_id IS NULL", [genreId]);
+    "SELECT * FROM movies WHERE genre_1_id = $1 AND genre_2_id IS NULL",
+    [genreId],
+  );
   return rows;
 }
 
@@ -286,6 +298,7 @@ async function deleteStudio(studioId, studioMovies) {
 export {
   getAllMovies,
   getMissingDataMovies,
+  getSearchResults,
   getSingleMovie,
   checkForDupeMovie,
   addMovie,

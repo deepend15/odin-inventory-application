@@ -55,14 +55,14 @@ INSERT INTO genres (genre, url_path)
     ('War', 'war'),
     ('Western', 'western');
 
-INSERT INTO movies (title, studio_id, genre_1_id, genre_2_id, year, url_path)
+INSERT INTO movies (title, studio_id, genre_1_id, genre_2_id, year, stock, url_path)
   VALUES
-    ('The Godfather', 2, 5, 13, 1972, 'the-godfather'),
+    ('The Godfather', 2, 5, 13, 1972, 5, 'the-godfather'),
     ('Coco', 3, 4, 12, 2017, 'coco'),
-    ('Spider-Man (2002)', 4, 2, NULL, 2002, 'spider-man-2002'), 
-    ('Harry Potter and the Sorceror''s Stone', 5, 7, NULL, 2001, 'harry-potter-and-the-sorcerors-stone'),
-    ('Everything Everywhere All At Once', 6, 2, 3, 2022, 'everything-everywhere-all-at-once'),
-    ('The Notebook', 7, 6, NULL, 2004, 'the-notebook');
+    ('Spider-Man (2002)', 4, 2, NULL, 2002, 10, 'spider-man-2002'), 
+    ('Harry Potter and the Sorceror''s Stone', 5, 7, NULL, 2001, 15, 'harry-potter-and-the-sorcerors-stone'),
+    ('Everything Everywhere All At Once', 6, 2, 3, 2022, 10, 'everything-everywhere-all-at-once'),
+    ('The Notebook', 7, 6, NULL, 2004, 15, 'the-notebook');
 `;
 
 async function main() {

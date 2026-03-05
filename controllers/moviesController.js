@@ -7,9 +7,30 @@ async function allMoviesGet(req, res) {
   if (req.query.delete) {
     return res.render("movies/deleteMovieSuccess");
   }
+
   let missingDataMovies;
   const results = await db.getMissingDataMovies();
   if (results.length > 0) missingDataMovies = results;
+
+  if (req.query.search || req.query.search === "") {
+    if (req.query.search === "") {
+      return res.render("movies/searchResults", {
+        title: "All movies",
+        searchResults: [],
+        searchInputValue: "",
+        missingDataMovies: missingDataMovies,
+      });
+    }
+    const searchedTitle = req.query.search;
+    const searchResults = await db.getSearchResults(searchedTitle);
+    return res.render("movies/searchResults", {
+      title: "All movies",
+      searchResults: searchResults,
+      searchInputValue: searchedTitle,
+      missingDataMovies: missingDataMovies,
+    });
+  }
+
   const movies = await db.getAllMovies();
   res.render("movies/allMovies", {
     title: "All movies",
