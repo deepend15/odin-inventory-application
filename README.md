@@ -1,7 +1,7 @@
-# node-express-template
+A simple inventory application to track the inventory of movies for a business. Standard users have the ability to add new movies, while admin users have the added ability to delete and edit movies, as well as create/edit/delete genres and studios. The app is intentionally simplistic and features little to no styling / CSS.
 
-Intended for use as a basic template for Express projects that leverage a PostgreSQL database, and views via EJS.
+This project demonstrates an understanding of various NodeJS/Express concepts, as well as database management via PostgreSQL.
 
-Dependencies include: Express, EJS, express-validator, &amp; pg.
+See [.env.example](https://github.com/deepend15/odin-inventory-application/blob/main/.env.example) for the needed environment variables.
 
-To get started, create a .env file in the project directory that includes the variables in [env.example](https://github.com/deepend15/node-express-template/blob/main/.env.example), update project name / description / all URL info in package.json, and run `npm install`.
+Live link: https://odin-inventory-application-production-7fd3.up.railway.app/
