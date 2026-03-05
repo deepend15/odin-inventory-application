@@ -80,7 +80,7 @@ const emptyErr = "cannot be empty.";
 const titleErr = "cannot be more than 255 characters.";
 const genre2Err = "cannot be the same as the primary genre.";
 const yearErr = "must be a number between 1878 and 2500.";
-const stockErr = "must be a number between 1 and 2000.";
+const stockErr = "must be a number between 0 and 2000.";
 
 const validateMovie = [
   body("title")
@@ -103,7 +103,7 @@ const validateMovie = [
     .withMessage(`Year ${yearErr}`),
   body("stock")
     .trim()
-    .isInt({ min: 1, max: 200 })
+    .isInt({ min: 0, max: 2000 })
     .withMessage(`Number in stock ${stockErr}`),
 ];
 
